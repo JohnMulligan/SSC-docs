@@ -1,0 +1,15 @@
+asgiref
+bibtexparser
+certifi
+charset-normalizer
+Django
+feedparser
+idna
+pyparsing
+pytz
+pyzotero
+requests
+sgmllib3k
+sqlparse
+urllib3
+gunicorn

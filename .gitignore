@@ -1,0 +1,5 @@
+django/db.sqlite3
+localsettings.py
+venv/
+.DS_Store
+static/

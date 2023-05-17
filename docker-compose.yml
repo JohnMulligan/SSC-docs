@@ -1,0 +1,41 @@
+---
+version: "3.7"
+
+services:
+  ssc-django:
+    image: "ssc-django"
+    container_name: "ssc-django"
+    hostname: "ssc-django"
+    restart: "on-failure"
+    ports:
+      - "8000:8000"
+    networks:
+      - "ssc"
+    volumes:
+      - "./django/:/srv/ssc-django"
+    build:
+      context: "."
+      dockerfile: "./docker/django/Dockerfile"
+
+  ssc-django-mailhog:
+    image: "mailhog/mailhog:latest"
+    container_name: "ssc-mailhog"
+    hostname: "ssc-mailhog"
+    restart: "on-failure"
+    depends_on:
+      - "ssc-django"
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - "ssc"
+    logging:
+      driver: "none"
+
+networks:
+  ssc:
+    driver: "bridge"
+    ipam:
+      driver: "default"
+      config:
+        - subnet: "172.20.0.0/16"
