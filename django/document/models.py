@@ -2,22 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-class SourceType(models.Model):
-	"""
-	Sources types.
-	Representing the group of sources.
-	"""
-
-	group_name = models.CharField(max_length=30)
-
-	class Meta:
-		verbose_name = "Sources type"
-		verbose_name_plural = "Sources types"
-
-	def __str__(self):
-		return self.group_name
-
-
 class LegacySource(models.Model):
 	"""
 	Voyage sources.
@@ -40,15 +24,10 @@ class LegacySource(models.Model):
 		null=False,
 		blank=True
 	)
-	source_type = models.ForeignKey(
-		'SourceType',
-		null=False,
-		on_delete=models.CASCADE
-	)
 
 	class Meta:
-		verbose_name = 'Source'
-		verbose_name_plural = "Sources"
+		verbose_name = 'Legacy Voyage Source'
+		verbose_name_plural = "Legacy Voyage Sources"
 		ordering = ['short_ref', 'full_ref']
 
 	def __str__(self):
@@ -79,22 +58,14 @@ class SourcePageConnection(models.Model):
 		on_delete=models.CASCADE
 	)
 	
-	source_page=models.ForeignKey(
+	source_page=models.OneToOneField(
 		'SourcePage',
 		related_name='zotero_connection',
-		on_delete=models.CASCADE,
-		unique=True
-	)
-	
-	page_order=models.IntegerField(
-		null=False,
-		blank=False,
-		default=1
+		on_delete=models.CASCADE
 	)
 	
 	class Meta:
 		unique_together=[
-			['zotero_source','source_page','page_order'],
 			['zotero_source','source_page']
 		]
 	

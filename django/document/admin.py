@@ -1,17 +1,12 @@
 from django.contrib import admin
 from document.models import *
 
-class SourceTypeAdmin(admin.ModelAdmin):
-	fields=['group_name']
-	list_display=('group_name',)
-
 
 class LegacySourceAdmin(admin.ModelAdmin):
-	
+	search_fields=('short_ref','full_ref')
 	fields=[
 		'short_ref',
-		'full_ref',
-		'source_type',
+		'full_ref'
 	]
 	
 	list_display=('short_ref','full_ref')
@@ -22,8 +17,9 @@ class SourcePageConnectionInline(admin.TabularInline):
 
 class ZoteroSourceAdmin(admin.ModelAdmin):
 	inlines=(SourcePageConnectionInline,)
+	search_fields=('zotero_url','zotero_title')
+	autocomplete_fields=('legacy_source',)
 	fields=[
-		'legacy_source',
 		'zotero_url',
 		'zotero_title'	
 	]
@@ -32,4 +28,3 @@ class ZoteroSourceAdmin(admin.ModelAdmin):
 
 admin.site.register(ZoteroSource, ZoteroSourceAdmin)
 admin.site.register(LegacySource, LegacySourceAdmin)
-admin.site.register(SourceType, SourceTypeAdmin)

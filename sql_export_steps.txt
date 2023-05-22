@@ -1,0 +1,167 @@
+voyage_ship (but only id,ship_name)
+select id,ship_name from voyage_voyageship into outfile 'voyage_voyageship.csv' fields terminated by '|';
+voyage_voyage (but only id,voyage_id,voyage_ship_id)
+select id,voyage_id,dataset,voyage_ship_id from voyage_voyage into outfile 'voyage_voyage.csv' fields terminated by '|';
+past_registercountry
+select * from past_registercountry into outfile 'past_registercountry.csv' fields terminated by '|';
+#past_moderncountry
+select * from past_moderncountry into outfile 'past_moderncountry.csv' fields terminated by '|';
+#past_languagegroup (problem with nulls though)
+select * from past_languagegroup into outfile 'past_languagegroup.csv' fields terminated by '|';
+#past_languagegroup
+select * from voyage_voyageoutcome into outfile 'voyage_voyageoutcome.csv' fields terminated by '|';
+#past_enslaveridentity
+select id,principal_alias,birth_year,birth_month,birth_day,death_year,death_month,death_day,father_name,father_occupation,mother_name,probate_date,will_value_pounds,will_value_dollars,will_court,notes from past_enslaveridentity into outfile 'past_enslaveridentity.csv' fields terminated by '|';
+#past enslaverrole
+select * from past_enslaverrole into outfile 'past_enslaverrole.csv' fields terminated by '|';
+#past enslaveralias
+select * from past_enslaveralias into outfile 'past_enslaveralias.csv' fields terminated by '|';
+sudo cp /usr/local/mysql/data/voyages_may9/past_enslaveralias.csv ./
+#enslavementrelation
+select * from past_enslavementrelationtype into outfile 'past_enslavementrelationtype.csv' fields terminated by '|';
+sudo cp /usr/local/mysql/data/voyages_may9/past_enslavementrelationtype.csv ./
+#captivefate
+select * from past_captivefate into outfile 'past_captivefate.csv' fields terminated by '|';
+sudo cp /usr/local/mysql/data/voyages_may9/past_captivefate.csv ./  
+#captive status
+select * from past_captivestatus into outfile 'past_captivestatus.csv' fields terminated by '|';
+sudo cp /usr/local/mysql/data/voyages_may9/past_captivestatus.csv ./
+#enslavervoyageconnection
+select * from past_enslavervoyageconnection into outfile 'past_enslavervoyageconnection.csv' fields terminated by '|';
+sudo cp /usr/local/mysql/data/voyages_may9/past_enslavervoyageconnection.csv ./
+#enslavementrelation
+select id,relation_type_id,voyage_id from past_enslavementrelation into outfile 'past_enslavementrelation.csv' fields terminated by '|';
+sudo cp /usr/local/mysql/data/voyages_may9/past_enslavementrelation.csv ./  
+#enslaverinrelation
+select id,enslaver_alias_id,relation_id,role_id from past_enslaverinrelation into outfile 'past_enslaverinrelation.csv' fields terminated by '|';
+sudo cp /usr/local/mysql/data/voyages_may9/past_enslaverinrelation.csv ./ 
+#enslaved
+select documented_name,name_first,name_second,name_third,modern_name,editor_modern_names_certainty,age,gender,height,skin_color,dataset,notes,captive_fate_id,captive_status_id,language_group_id,register_country_id,voyage_id,enslaved_id from past_enslaved into outfile 'past_enslaved.csv' fields terminated by '|';
+sudo mv /usr/local/mysql/data/voyages_may9/past_enslaved.csv ./                 
+sudo chmod 777 /Users/jcm10/Documents/voyages_csv_dumps/past_enslaved.csv           
+#enslavedinrelation
+select id,enslaved_id,relation_id from past_enslavedinrelation into outfile 'past_enslavedinrelation.csv' fields terminated by '|';
+sudo cp /usr/local/mysql/data/voyages_may9/past_enslavedinrelation.csv ./
+
+
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/voyage_voyageship.csv voyage_voyageship
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/voyage_voyage.csv voyage_voyage
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_registercountry.csv past_registercountry
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_moderncountry.csv past_moderncountry
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_languagegroup.csv past_languagegroup
+sqlite> update past_languagegroup set  latitude=Null where latitude in ("\N","");
+sqlite> update past_languagegroup set  longitude=Null where longitude in ("\N","");
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_enslaveridentity.csv past_enslaveridentity
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_enslaverrole.csv past_enslaverrole
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_enslaveralias.csv past_enslaveralias
+
+##THEN CHECK TO SEE THAT THE MANUAL ID AND IDENTITY ID AREN'T IN THE WRONG COLUMNS
+## if so...
+alter table past_enslaveralias add column manual2 TEXT;
+update past_enslaveralias set manual2=identity_id;
+update past_enslaveralias set identity_id=manual_id;
+update past_enslaveralias set manual_id=manual2;
+alter table past_enslaveralias drop column manual2;
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_enslavementrelationtype.csv past_enslavementrelationtype
+
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_captivefate.csv past_captivefate
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_captivestatus.csv past_captivestatus
+
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_enslavervoyageconnection.csv past_enslavervoyageconnection
+
+##swapped columns here as well
+update past_enslavervoyageconnection set enslaver_alias_id=role_id;
+update past_enslavervoyageconnection set role_id=`order`;
+update past_enslavervoyageconnection set `order`=Null;
+
+
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_enslavementrelation.csv past_enslavementrelation
+
+update past_enslavementrelation set voyage_id=Null where voyage_id="\N";
+
+
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_enslaverinrelation.csv past_enslaverinrelation
+
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_enslaved.csv past_enslaved
+
+.mode csv
+.headers off
+.separator ROW "\n"
+.separator "|"
+.import /Users/jcm10/Documents/voyages_csv_dumps/past_enslavedinrelation.csv past_enslavedinrelation
+
