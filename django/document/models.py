@@ -45,7 +45,13 @@ class SourcePage(models.Model):
 	iiif_baseimage_url=models.URLField(null=True,blank=True)
 	
 	def __str__(self):
-		nonnulls=[i for i in [item_url,iiif_manifest_url,iiif_baseimage_url] if i is not None and i != '']
+		nonnulls=[i for i in [
+				self.item_url,
+				self.iiif_manifest_url,
+				self.iiif_baseimage_url
+			]
+			if i is not None and i != ''
+		]
 		if len(nonnulls)==0:
 			return ''
 		else:
@@ -58,7 +64,7 @@ class SourcePageConnection(models.Model):
 		on_delete=models.CASCADE
 	)
 	
-	source_page=models.OneToOneField(
+	source_page=models.ForeignKey(
 		'SourcePage',
 		related_name='zotero_connection',
 		on_delete=models.CASCADE
@@ -81,7 +87,7 @@ class ZoteroSource(models.Model):
 		'LegacySource',
 		related_name="source",
 		null=False,
-		blank=True,
+		blank=False,
 		on_delete=models.CASCADE
 	)
 	
@@ -90,9 +96,14 @@ class ZoteroSource(models.Model):
 	zotero_title=models.CharField(
 		max_length=255,
 		null=False,
-		blank=True,
-		unique=True
+		blank=False
+	)
+	
+	zotero_date=models.CharField(
+		max_length=10,
+		null=False,
+		blank=False
 	)
 	
 	def __str__(self):
-		return zotero_title
+		return self.zotero_title + " " + self.zotero_date

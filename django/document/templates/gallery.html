@@ -1,0 +1,41 @@
+<div>
+
+{% for zs in page_obj %}
+
+	<div>
+
+	<p>{{ zs.zotero_title }}<br/>{{ zs.zotero_date }}</p>
+	{% for spc in zs.page_connection.all %}
+
+		{% if spc.source_page.iiif_baseimage_url %}
+			
+			<img src="{{spc.source_page.iiif_baseimage_url}}">
+			
+		{% endif %}
+
+	{% endfor %}
+
+	</div>
+	<hr/>
+
+{% endfor %}
+
+</div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="1">&laquo; first</a>
+            <a href="{{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="{{ page_obj.next_page_number }}">next</a>
+            <a href="{{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>

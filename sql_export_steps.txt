@@ -159,6 +159,25 @@ update past_enslavementrelation set voyage_id=Null where voyage_id="\N";
 .separator "|"
 .import /Users/jcm10/Documents/voyages_csv_dumps/past_enslaved.csv past_enslaved
 
+sqlite> update past_enslaved set name_first=Null where name_first="\N";
+sqlite> update past_enslaved set name_second=Null where name_second="\N";
+sqlite> update past_enslaved set name_third=Null where name_third="\N";
+sqlite> update past_enslaved set editor_modern_names_certainty=Null where editor_modern_names_certainty="\N";
+sqlite> update past_enslaved set age=Null where age="\N";
+sqlite> update past_enslaved set height=Null where height="\N";
+sqlite> update past_enslaved set gender=Null where gender="\N";
+sqlite> update past_enslaved set dataset=Null where dataset="\N";
+sqlite> update past_enslaved set captive_status_id=Null where captive_status_id="\N";
+sqlite> update past_enslaved set captive_fate_id=Null where captive_fate_id="\N";
+sqlite> update past_enslaved set language_group_id=Null where language_group_id="\N";
+sqlite> update past_enslaved set register_country_id=Null where register_country_id="\N";
+sqlite> update past_enslaved set voyage_id=Null where voyage_id="\N";
+sqlite> update past_enslaved set enslaved_id=Null where enslaved_id="\N";
+sqlite> update past_enslaved set modern_name=Null where modern_name="\N";
+
+
+
+
 .mode csv
 .headers off
 .separator ROW "\n"

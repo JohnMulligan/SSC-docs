@@ -1,8 +1,7 @@
 from django.db import models
+from document.models import ZoteroSource
 
 class VoyageShip(models.Model):
-
-	# Data variables
 	ship_name = models.CharField("Name of vessel",
 								 max_length=255,
 								 null=True,
@@ -16,12 +15,6 @@ class VoyageShip(models.Model):
 		verbose_name_plural = "Ships"
 
 class Voyage(models.Model):
-	"""
-	Represents the relationship between Voyage and VoyageSources
-	source_order determines the order sources appear for each voyage
-	related to: :class:`~voyages.apps.voyage.models.VoyageSources`
-	related to: :class:`~voyages.apps.voyage.models.Voyage`
-	"""
 	voyage_id = models.IntegerField(
 		null=False,
 		blank=False,
@@ -41,7 +34,7 @@ class Voyage(models.Model):
 		on_delete=models.CASCADE)
 
 	dataset = models.IntegerField(choices=VoyageDataSet.choices)
-	
+	sources = models.ManyToManyField(ZoteroSource,related_name="source_voyages")
 	def __str__(self):
 		return str(self.voyage_id)
 
