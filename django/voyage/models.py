@@ -2,10 +2,12 @@ from django.db import models
 from document.models import ZoteroSource
 
 class VoyageShip(models.Model):
-	ship_name = models.CharField("Name of vessel",
-								 max_length=255,
-								 null=True,
-								 blank=True)
+	ship_name = models.CharField(
+		"Name of vessel",
+		max_length=255,
+		null=True,
+		blank=True
+	)
 
 	def __str__(self):
 		return self.ship_name if self.ship_name is not None else "None"
@@ -47,6 +49,3 @@ class Voyage(models.Model):
 	class Meta:
 		verbose_name = 'Voyage'
 		verbose_name_plural = "Voyages"
-
-
-
