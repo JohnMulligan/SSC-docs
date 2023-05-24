@@ -11,16 +11,30 @@ class LegacySourceAdmin(admin.ModelAdmin):
 	
 	list_display=('short_ref','full_ref')
 
+class SourcePageConnectionInlineZ(admin.TabularInline):
+	model=SourcePageConnection
+	autocomplete_fields=('source_page',)
+	extra=0
+
+class SourcePageConnectionInlineS(admin.TabularInline):
+	model=SourcePageConnection
+	autocomplete_fields=('zotero_source',)
+	extra=0
+
 class SourcePageAdmin(admin.ModelAdmin):
+	inlines=(SourcePageConnectionInlineS,)
 	search_fields=['iiif_baseimage_url','item_url']
 	
-	
-class SourcePageConnectionInline(admin.TabularInline):
-	model=SourcePageConnection
+class SourceVoyageInline(admin.TabularInline):
+	model=ZoteroSource.source_voyages.through
+	autocomplete_fields=('voyage',)
 	extra=0
 
 class ZoteroSourceAdmin(admin.ModelAdmin):
-	inlines=(SourcePageConnectionInline,)
+	inlines=(
+		SourcePageConnectionInlineZ,
+		SourceVoyageInline
+	)
 	search_fields=('zotero_url','zotero_title')
 	autocomplete_fields=('legacy_source',)
 	fields=[
@@ -29,8 +43,7 @@ class ZoteroSourceAdmin(admin.ModelAdmin):
 		'zotero_date',
 		'legacy_source'
 	]
-	
-	list_display=('zotero_title',)
+	list_display=('zotero_title','zotero_date')
 
 admin.site.register(ZoteroSource, ZoteroSourceAdmin)
 admin.site.register(LegacySource, LegacySourceAdmin)

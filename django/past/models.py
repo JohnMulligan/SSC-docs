@@ -148,7 +148,7 @@ class EnslavementRelation(models.Model):
 # 	source = models.ForeignKey(ZoteroSource, related_name="source_enslavement_relations",
 # 							   null=True,blank=True, on_delete=models.CASCADE)
 	def __str__(self):
-		return str(self.id)
+		return " ".join([i for i in [str(self.id),self.voyage.__str__(),self.relation_type.__str__()] if i not in ("",None)])
 
 class EnslavedInRelation(models.Model):
 	"""
@@ -165,7 +165,7 @@ class EnslavedInRelation(models.Model):
 		null=False,
 		on_delete=models.CASCADE)
 	def __str__(self):
-		return self.enslaved.documented_name
+		return " ".join([i for i in [self.enslaved.documented_name.__str__(),self.relation.__str__()] if i not in ("",None)])
 
 
 class EnslaverInRelation(models.Model):
@@ -204,7 +204,7 @@ class ModernCountry(NamedModelAbstractBase):
 								   max_digits=10,
 								   decimal_places=7,
 								   null=False)
-	languages = models.ManyToManyField(LanguageGroup)
+	languages = models.ManyToManyField(LanguageGroup,related_name="language_countries")
 	
 	class Meta:
 		verbose_name = "Modern country"
@@ -329,7 +329,7 @@ class Enslaved(models.Model):
 # 	
 	captive_fate = models.ForeignKey(CaptiveFate, null=True, blank=True, on_delete=models.SET_NULL, db_index=True)
 	captive_status = models.ForeignKey(CaptiveStatus, null=True, blank=True, on_delete=models.SET_NULL, db_index=True)
-	voyage = models.ForeignKey(Voyage, null=False, on_delete=models.CASCADE, db_index=True)
+	voyage = models.ForeignKey(Voyage, null=False, on_delete=models.CASCADE, db_index=True, related_name='voyage_enslaved_people')
 	dataset = models.IntegerField(null=False, default=0, db_index=True)
 	notes = models.CharField(null=True,blank=True, max_length=8192)
 # 	sources = models.ManyToManyField(ZoteroSource,related_name="sources_enslaved")

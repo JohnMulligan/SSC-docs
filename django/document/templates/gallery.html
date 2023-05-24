@@ -1,20 +1,15 @@
+
 <div>
 
 {% for zs in page_obj %}
 
 	<div>
-
 	<p>{{ zs.zotero_title }}<br/>{{ zs.zotero_date }}</p>
 	{% for spc in zs.page_connection.all %}
-
 		{% if spc.source_page.iiif_baseimage_url %}
-			
-			<img src="{{spc.source_page.iiif_baseimage_url}}">
-			
+			<a href="single/{{zs.id}}"><img src="{{spc.source_page.square_thumbnail}}"></a>
 		{% endif %}
-
 	{% endfor %}
-
 	</div>
 	<hr/>
 

@@ -36,7 +36,13 @@ class Voyage(models.Model):
 	dataset = models.IntegerField(choices=VoyageDataSet.choices)
 	sources = models.ManyToManyField(ZoteroSource,related_name="source_voyages")
 	def __str__(self):
-		return str(self.voyage_id)
+		if self.ship is not None:
+			if self.ship.ship_name is not None:
+				return " ".join([str(self.voyage_id),str(self.ship.ship_name)])
+			else:
+				return str(self.voyage_id)
+		else:
+			return str(self.voyage_id)
 
 	class Meta:
 		verbose_name = 'Voyage'

@@ -1,5 +1,6 @@
 from django.db import models
-
+from model_utils.models import AutoLastModifiedField
+import re
 # Create your models here.
 
 class LegacySource(models.Model):
@@ -24,6 +25,8 @@ class LegacySource(models.Model):
 		null=False,
 		blank=True
 	)
+	
+	last_modified=AutoLastModifiedField()
 
 	class Meta:
 		verbose_name = 'Legacy Voyage Source'
@@ -44,6 +47,8 @@ class SourcePage(models.Model):
 	iiif_manifest_url=models.URLField(null=True,blank=True)
 	iiif_baseimage_url=models.URLField(null=True,blank=True)
 	
+	last_modified=AutoLastModifiedField()
+	
 	def __str__(self):
 		nonnulls=[i for i in [
 				self.item_url,
@@ -56,7 +61,14 @@ class SourcePage(models.Model):
 			return ''
 		else:
 			return nonnulls[0]
-
+	@property
+	def square_thumbnail(self):
+		if self.iiif_baseimage_url not in (None,""):
+			square_thumbnail=re.sub("/full/max/","/square/200,200/",self.iiif_baseimage_url)
+			return square_thumbnail
+		else:
+			return None
+			
 class SourcePageConnection(models.Model):
 	zotero_source=models.ForeignKey(
 		'ZoteroSource',
@@ -105,5 +117,15 @@ class ZoteroSource(models.Model):
 		blank=False
 	)
 	
+	last_modified=AutoLastModifiedField()
+	
 	def __str__(self):
 		return self.zotero_title + " " + self.zotero_date
+
+	@property
+	def zotero_web_page_url(self):
+		if self.zotero_url not in (None,""):
+			url=re.sub("api\.zotero\.org","www.zotero.org",self.zotero_url)
+			return url
+		else:
+			return None
