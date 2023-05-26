@@ -4,6 +4,7 @@ from django.shortcuts import redirect,render
 from django.core.paginator import Paginator
 from document.models import *
 import re
+from django.db.models import Q
 
 #######################
 # default view will be a paginated gallery
@@ -12,8 +13,12 @@ def index(request,pagenumber=1):
 	if request.user.is_authenticated:
 		
 		docs=ZoteroSource.objects.all()
+		#going to filter out any non-michigan materials for testing
+		docs=docs.filter(page_connection__source_page__iiif_baseimage_url__icontains='umich').distinct()
 		docs_paginator=Paginator(docs, 12)
 		this_page=docs_paginator.get_page(pagenumber)
+		for p in this_page:
+			print(p.id)
 		
 # 		for zs in this_page:
 # 			for spc in zs.page_connection.all():

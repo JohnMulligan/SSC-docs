@@ -64,7 +64,9 @@ class SourcePage(models.Model):
 	@property
 	def square_thumbnail(self):
 		if self.iiif_baseimage_url not in (None,""):
-			square_thumbnail=re.sub("/full/max/","/square/200,200/",self.iiif_baseimage_url)
+# 			square_thumbnail=re.sub("/full/max/","/square/200,200/",self.iiif_baseimage_url)
+			#michigan's test server can't handle square requests
+			square_thumbnail=re.sub("/full/max/","/full/200,/",self.iiif_baseimage_url)
 			return square_thumbnail
 		else:
 			return None
