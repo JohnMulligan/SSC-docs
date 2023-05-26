@@ -61,3 +61,13 @@ open the admin interface at http://127.0.0.1:8000/admin, logging in with u:voyag
 #### 4b. View the digitized documents & attached records
 
 http://127.0.0.1:8000/docs/
+
+## Open questions
+
+* How do we want to link enslavers to this data?
+* Are we satisfied with the way we're linking enslaved people?
+* What metadata are we missing here?
+* Do we want transcriptions to attach at the page level, or the document level?
+* What about the other entities -- those are being linked at the document level.
+* Above all, what changes do we need to fold in to make this work for SSC, not just Texas data?
+* Do we fold in JKW's source data?
