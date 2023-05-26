@@ -32,7 +32,7 @@ class Voyage(models.Model):
 	ship = models.ForeignKey('VoyageShip',
 		blank=True,
 		null=True,
-		related_name='voyage_ship',
+		related_name='ship_voyage',
 		on_delete=models.CASCADE)
 
 	dataset = models.IntegerField(choices=VoyageDataSet.choices)

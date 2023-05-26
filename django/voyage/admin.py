@@ -3,8 +3,15 @@ from .models import *
 from document.models import *
 from past.models import Enslaved
 
+class VoyageInline(admin.TabularInline):
+	model=Voyage
+	exclude=('sources',)
+	extra=0
+
+
 class VoyageShipAdmin(admin.ModelAdmin):
-	search_fields=('ship',)
+	search_fields=('ship_name',)
+	inlines=(VoyageInline,)
 	list_display=('ship_name',)
 	
 class EnslavedInline(admin.TabularInline):
