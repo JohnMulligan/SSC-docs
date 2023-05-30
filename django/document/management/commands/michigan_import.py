@@ -40,7 +40,41 @@ class Command(BaseCommand):
 				iiif_base_urls=[re.sub("/canvas.*","",u) for u in doc['canvases']]
 # 				print(iiif_base_urls)
 # 				template = zot.item_template('book')
-				template={'itemType': 'book', 'title': '', 'creators': [{'creatorType': 'author', 'firstName': '', 'lastName': ''}], 'abstractNote': '', 'series': '', 'seriesNumber': '', 'volume': '', 'numberOfVolumes': '', 'edition': '', 'place': '', 'publisher': '', 'date': '', 'numPages': '', 'language': '', 'ISBN': '', 'shortTitle': '', 'url': '', 'accessDate': '', 'archive': '', 'archiveLocation': '', 'libraryCatalog': '', 'callNumber': '', 'rights': '', 'extra': '', 'tags': [], 'collections': [], 'relations': {}}
+				template={
+					'itemType': 'book',
+					'title': '',
+					'creators': [
+						{
+							'creatorType': 'author',
+							'firstName': '',
+							'lastName': ''
+						}
+					],
+					'abstractNote': '',
+					'series': '',
+					'seriesNumber': '',
+					'volume': '',
+					'numberOfVolumes': '',
+					'edition': '',
+					'place': '',
+					'publisher': '',
+					'date': '',
+					'numPages': '',
+					'language': '',
+					'ISBN': '',
+					'shortTitle': '',
+					'url': '',
+					'accessDate': '',
+					'archive': '',
+					'archiveLocation': '',
+					'libraryCatalog': '',
+					'callNumber': '',
+					'rights': '',
+					'extra': '',
+					'tags': [],
+					'collections': [],
+					'relations': {}
+				}
 # 				print(template)
 				template['itemType'] = "Manuscript"
 				template['title'] = doc_title

@@ -15,7 +15,7 @@ class LegacySource(models.Model):
 		max_length=255,
 		null=False,
 		blank=True,
-		unique=True
+# 		unique=True
 	)
 	# Might contain HTML text formatting
 	# SHOULDN'T. CAN'T. NO, NO, NO. WHAT WERE THEY THINKING. WE HAVE FULL-ON DIV TAGS IN THIS FIELD ON THE LIVE SITE.
@@ -114,7 +114,7 @@ class ZoteroSource(models.Model):
 	)
 	
 	zotero_date=models.CharField(
-		max_length=10,
+		max_length=60,
 		null=False,
 		blank=False
 	)
