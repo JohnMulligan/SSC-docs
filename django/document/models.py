@@ -66,7 +66,8 @@ class SourcePage(models.Model):
 		if self.iiif_baseimage_url not in (None,""):
 # 			square_thumbnail=re.sub("/full/max/","/square/200,200/",self.iiif_baseimage_url)
 			#michigan's test server can't handle square requests
-			square_thumbnail=re.sub("/full/max/","/full/200,/",self.iiif_baseimage_url)
+			iiif_endpoint_patterns="(/full/max/)|(/full/full/)"
+			square_thumbnail=re.sub(iiif_endpoint_patterns,"/full/200,/",self.iiif_baseimage_url)
 			return square_thumbnail
 		else:
 			return None

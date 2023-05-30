@@ -128,6 +128,7 @@ class Command(BaseCommand):
 						resp = zot.create_items([template])
 						zotero_url=resp['successful']['0']['links']['self']['href']
 						django_zotero_object.zotero_url=zotero_url
+						django_zotero_object.save()
 							
 
 					sp,sp_isnew=SourcePage.objects.get_or_create(

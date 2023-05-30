@@ -6,25 +6,45 @@ from document.models import *
 import re
 from django.db.models import Q
 
+
 #######################
 # default view will be a paginated gallery
-def index(request,pagenumber=1):
+def index(request,collection_id=1,pagenumber=1):
 	
 	if request.user.is_authenticated:
 		
 		docs=ZoteroSource.objects.all()
-		#going to filter out any non-michigan materials for testing
-		docs=docs.filter(page_connection__source_page__iiif_baseimage_url__icontains='umich').distinct()
+		
+		
+		other_collections=[]
+		for collection_tuple in docs.values_list("legacy_source__id","legacy_source__short_ref").distinct():
+			this_collection_id,this_collection_label=collection_tuple
+			if this_collection_id==collection_id:
+				page_collection_label=this_collection_label
+				page_collection_id=this_collection_id
+			else:
+				other_collections.append({
+					"id":this_collection_id,
+					"label":this_collection_label
+				})
+			
+		docs=docs.filter(legacy_source__id=collection_id).distinct()
+			
 		docs_paginator=Paginator(docs, 12)
 		this_page=docs_paginator.get_page(pagenumber)
-		for p in this_page:
-			print(p.id)
 		
-# 		for zs in this_page:
-# 			for spc in zs.page_connection.all():
-# 				print(spc.source_page.iiif_baseimage_url)
+# 		print(other_collections)
 		
-		return render(request, "gallery.html", {"page_obj": this_page})
+		return render(
+			request,
+			"gallery.html",
+			{
+				"page_obj": this_page,
+				"other_collections":other_collections,
+				"page_collection_label":page_collection_label,
+				"page_collection_id":page_collection_id
+			}
+		)
 	else:
 		return HttpResponseForbidden("Forbidden")
 		
@@ -34,9 +54,9 @@ def index(request,pagenumber=1):
 def z_source_page(request,zotero_source_id=1):
 	
 	if request.user.is_authenticated:
-		print(zotero_source_id)
+# 		print(zotero_source_id)
 		doc=ZoteroSource.objects.get(id=zotero_source_id)
-		print(doc)
+# 		print(doc)
 		return render(request, "single_doc.html", {'zs':doc})
 	else:
 		return HttpResponseForbidden("Forbidden")
